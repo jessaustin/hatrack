@@ -1,3 +1,8 @@
+###
+Copyright (c) 2016 Jess Austin <jess.austin@gmail.com>
+Released under GNU Affero General Public License, version 3
+###
+
 chrome.storage.sync.get 'cookieHats', ({ cookieHats: items }) ->
   hats = document.querySelector '#hats'
   console.log items

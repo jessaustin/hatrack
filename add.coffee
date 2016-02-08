@@ -1,3 +1,8 @@
+###
+Copyright (c) 2016 Jess Austin <jess.austin@gmail.com>
+Released under GNU Affero General Public License, version 3
+###
+
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
 
@@ -23,6 +28,3 @@ document.querySelector 'form'
       items.push { color, name }
       chrome.storage.sync.set cookieHats: items
     event.preventDefault()
-#    chrome.storage.sync.set cookieHats: [
-#      color: 
-#      name:
