@@ -1,0 +1,23 @@
+{
+  "name": "Hatrack",
+  "version": "0",
+  "description": "Wear different hats in different windows.",
+  "author": "Jess Austin",
+  "license": "AGPL",
+  "icons": {
+  },
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+    "default_title": "click to wear a different hat!"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "optional_permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "https://*/*"
+  ],
+  "manifest_version": 2
+}
