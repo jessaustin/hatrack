@@ -31,7 +31,7 @@ update = ->
           .addEventListener 'click', (event) ->
             event.stopPropagation()
             chrome.windows.create
-              url: "add.html?color=#{encodeURIComponent color}&name=#{
+              url: "edit.html?color=#{encodeURIComponent color}&name=#{
                 encodeURIComponent name}&index=#{i}"
               type: 'popup'
               focused: yes
@@ -44,7 +44,7 @@ window.addEventListener 'focus', update
 document.querySelector '#add'
   .addEventListener 'click', (event) ->
     chrome.windows.create
-      url: "add.html?color=#{encodeURIComponent '#00ff00'}"
+      url: "edit.html?color=#{encodeURIComponent '#00ff00'}"
       type: 'popup'
       focused: yes
     ,
