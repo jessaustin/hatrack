@@ -39,9 +39,9 @@ window.addEventListener 'focus', -> # color widget is modal, so it's closed now
 document.querySelector 'form'
   .addEventListener 'submit', (event) ->
     { elements: [ { value: name }, { value: color } ] } = event.target
-    chrome.storage.sync.get 'cookieHats', (items) ->
-      items = items.cookieHats ? []
+    chrome.storage.sync.get storageKey, (items) ->
+      items = items[storageKey] ? []
       items.splice query.index ? items.length, 1, { color, name }
-      chrome.storage.sync.set cookieHats: items, ->
+      chrome.storage.sync.set { storageKey: items }, ->
         window.close()
     event.preventDefault()

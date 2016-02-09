@@ -4,7 +4,9 @@ Released under GNU Affero General Public License, version 3
 ###
 
 update = ->
-  chrome.storage.sync.get 'cookieHats', ({ cookieHats: items }) ->
+  chrome.storage.sync.get storageKey, (got) ->
+    items = got[storageKey]
+    console.log got, items
     hats = document.querySelector '#hats'
     # start with empty div
     while hats.firstChild
@@ -22,11 +24,12 @@ update = ->
           .addEventListener 'click', ->
             alert "hat #{i}"
             window.close()
+        # XXX might want to confirm before deleting?
         document.querySelector "#hat-#{i} .delete"
           .addEventListener 'click', (event) ->
             event.stopPropagation()
             items.splice i, 1
-            chrome.storage.sync.set cookieHats: items, update # recurse
+            chrome.storage.sync.set { storageKey: items }, update # recurse
         document.querySelector "#hat-#{i} .edit"
           .addEventListener 'click', (event) ->
             event.stopPropagation()
