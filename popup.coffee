@@ -12,7 +12,7 @@ update = ->
     for { color, name }, i in items
       do (color, name, i) ->
         hats.insertAdjacentHTML 'beforeend', "
-          <div id=hat-#{i}>
+          <div id=hat-#{i} style='background-color:#{color}'>
             <span class=hat>#{name}</span>
             <img class=delete src=icons/000106-circle-cross-mark.png />
             <img class=edit src=icons/000150-pencil.png />

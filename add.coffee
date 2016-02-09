@@ -20,7 +20,7 @@ window.addEventListener 'focus', -> # color widget is modal, so it's closed now
 # add a new hat
 document.querySelector 'form'
   .addEventListener 'submit', (event) ->
-    { elements: [ { value: color }, { value: name } ] } = event.target
+    { elements: [ { value: name }, { value: color } ] } = event.target
     chrome.storage.sync.get 'cookieHats', (items) ->
       console.log 'items:', items
       items = items.cookieHats ? []
