@@ -9,14 +9,11 @@ for pair in window.location.search.substring(1).split '&'
   [ key, val ] = pair.split '='
   query[key] = decodeURIComponent val
 
-if query.color?
-  document.querySelector '#color'
-    .setAttribute 'value', query.color
+document.querySelector '#name'
+  .setAttribute 'value', query.name if query.name?
 
-nameNode = document.querySelector '#name'
-nameNode.focus()
-if query.name?
-  nameNode.setAttribute 'value', query.name
+document.querySelector '#color'
+  .setAttribute 'value', query.color
 
 document.querySelector '#add'
   .insertAdjacentHTML 'afterbegin', "<span>#{if query.index? then 'Save Changes
@@ -29,13 +26,13 @@ window.addEventListener 'blur', ->
   window.close() unless colorWidgetOpen
 
 document.querySelector '#color'
-  .addEventListener 'click', ->
+  .addEventListener 'click', ->     # the color widget has been opened
     colorWidgetOpen = yes
 
 window.addEventListener 'focus', -> # color widget is modal, so it's closed now
   colorWidgetOpen = no
 
-# add a new hat
+# save the (new or edited) hat
 document.querySelector 'form'
   .addEventListener 'submit', (event) ->
     { elements: [ { value: name }, { value: color } ] } = event.target
