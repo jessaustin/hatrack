@@ -17,14 +17,14 @@ document.querySelector '#color'
 window.addEventListener 'focus', -> # color widget is modal, so it's closed now
   colorWidgetOpen = no
 
-
 # add a new hat
 document.querySelector 'form'
   .addEventListener 'submit', (event) ->
-    { elements: [ { value: color }, { value: name }, _ ] } = event.target
+    { elements: [ { value: color }, { value: name } ] } = event.target
     chrome.storage.sync.get 'cookieHats', (items) ->
       console.log 'items:', items
       items = items.cookieHats ? []
       items.push { color, name }
-      chrome.storage.sync.set cookieHats: items
+      chrome.storage.sync.set cookieHats: items, ->
+        window.close()
     event.preventDefault()

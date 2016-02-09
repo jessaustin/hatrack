@@ -3,6 +3,28 @@
   Copyright (c) 2016 Jess Austin <jess.austin@gmail.com>
   Released under GNU Affero General Public License, version 3
 -->
+<style type=text/css>
+  body {
+    min-width: 200px
+  }
+  button, div {
+    font-size: 24px;
+  }
+  button {
+    float: right;
+    margin: 3px;
+    margin-top: 4px
+  }
+  button img, div img {
+    float: right;
+    vertical-align: middle;
+    margin-left: 3px
+  }
+</style>
+<link rel=stylesheet href=style.css>
 <div id=hats></div>
-<input id=add type=button value="Add New Hat"></input>
+<button id=add>
+  <span>Add New Hat</span>
+  <img src=icons/000104-plus.png />
+</button>
 <script src=popup.js></script>
