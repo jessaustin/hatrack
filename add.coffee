@@ -3,29 +3,30 @@ Copyright (c) 2016 Jess Austin <jess.austin@gmail.com>
 Released under GNU Affero General Public License, version 3
 ###
 
-search = {}
+# handle query params set by parent
+query = {}
 for pair in window.location.search.substring(1).split '&'
   [ key, val ] = pair.split '='
-  search[key] = decodeURIComponent val
+  query[key] = decodeURIComponent val
 
-if search.color?
-  console.log search
+if query.color?
   document.querySelector '#color'
-    .setAttribute 'value', search.color
+    .setAttribute 'value', query.color
 
-if search.name?
-  document.querySelector '#name'
-    .setAttribute 'value', search.name
+nameNode = document.querySelector '#name'
+nameNode.focus()
+if query.name?
+  nameNode.setAttribute 'value', query.name
 
 document.querySelector '#add'
-  .insertAdjacentHTML 'afterbegin', if search.index? then 'Save Changes to ' else 'Add '
+  .insertAdjacentHTML 'afterbegin', "<span>#{if query.index? then 'Save Changes
+    to' else 'Add'}</span>"
 
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
 
-#window.addEventListener 'blur', ->
-#  unless colorWidgetOpen
-#    window.close()
+window.addEventListener 'blur', ->
+  window.close() unless colorWidgetOpen
 
 document.querySelector '#color'
   .addEventListener 'click', ->
@@ -40,7 +41,7 @@ document.querySelector 'form'
     { elements: [ { value: name }, { value: color } ] } = event.target
     chrome.storage.sync.get 'cookieHats', (items) ->
       items = items.cookieHats ? []
-      items.splice search.index ? items.length, 1, { color, name }
+      items.splice query.index ? items.length, 1, { color, name }
       chrome.storage.sync.set cookieHats: items, ->
         window.close()
     event.preventDefault()

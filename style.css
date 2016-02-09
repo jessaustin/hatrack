@@ -1,8 +1,8 @@
 body {
   min-width: 200px
 }
-button, div {
-  font-size: 24px;
+button, div, input, label {
+  font-size: 22px;
   border-radius: 5px;
   padding: 2px
 }

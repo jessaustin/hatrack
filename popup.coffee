@@ -12,26 +12,32 @@ update = ->
     for { color, name }, i in items
       do (color, name, i) ->
         hats.insertAdjacentHTML 'beforeend', "
-          <div id=hat-#{i} style='background-color:#{color}'>
-            <span class=hat title='Open new window with this hat'>#{
-              name}</span>
+          <div id=hat-#{i} style='background-color:#{color}'
+              title='Open new window with this hat'>
+            <span class=hat>#{name}</span>
             <img class=delete title=Delete src=icons/000106-circle-cross-mark.png />
             <img class=edit title=Edit src=icons/000150-pencil.png />
           </div>"
-        document.querySelector "#hat-#{i} .hat"
+        document.querySelector "#hat-#{i}"
           .addEventListener 'click', ->
             alert "hat #{i}"
             window.close()
         document.querySelector "#hat-#{i} .delete"
-          .addEventListener 'click', ->
+          .addEventListener 'click', (event) ->
+            event.stopPropagation()
             items.splice i, 1
             chrome.storage.sync.set cookieHats: items, update # recurse
         document.querySelector "#hat-#{i} .edit"
-          .addEventListener 'click', ->
+          .addEventListener 'click', (event) ->
+            event.stopPropagation()
             chrome.windows.create
               url: "add.html?color=#{encodeURIComponent color}&name=#{
                 encodeURIComponent name}&index=#{i}"
               type: 'popup'
+              focused: yes
+            ,
+              ({tabs: [ child ] }) ->
+                console.log child
 
 window.addEventListener 'focus', update
 
@@ -40,3 +46,7 @@ document.querySelector '#add'
     chrome.windows.create
       url: "add.html?color=#{encodeURIComponent '#00ff00'}"
       type: 'popup'
+      focused: yes
+    ,
+      ({tabs: [ child ] }) ->
+        console.log child
