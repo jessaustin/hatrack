@@ -6,20 +6,20 @@ Released under GNU Affero General Public License, version 3
 update = ->
   chrome.storage.sync.get storageKey, (got) ->
     items = got[storageKey]
-    console.log got, items
     hats = document.querySelector '#hats'
     # start with empty div
     while hats.firstChild
       hats.removeChild hats.firstChild
+    # now fill it in
     for { color, name }, i in items
       do (color, name, i) ->
         hats.insertAdjacentHTML 'beforeend', "
-          <div id=hat-#{i} style='background-color:#{color}'
+          <button id=hat-#{i} style='background-color:#{color}'
               title='Open new window with this hat'>
             <span class=hat>#{name}</span>
             <img class=delete title=Delete src=icons/000106-circle-cross-mark.png />
             <img class=edit title=Edit src=icons/000150-pencil.png />
-          </div>"
+          </button>"
         document.querySelector "#hat-#{i}"
           .addEventListener 'click', ->
             alert "hat #{i}"
@@ -37,10 +37,11 @@ update = ->
               url: "edit.html?color=#{encodeURIComponent color}&name=#{
                 encodeURIComponent name}&index=#{i}"
               type: 'popup'
-              focused: yes
             ,
               ({tabs: [ child ] }) ->
                 console.log child
+    document.querySelector 'button'
+      .focus()
 
 window.addEventListener 'focus', update
 
@@ -49,7 +50,6 @@ document.querySelector '#add'
     chrome.windows.create
       url: "edit.html?color=#{encodeURIComponent '#00ff00'}"
       type: 'popup'
-      focused: yes
     ,
       ({tabs: [ child ] }) ->
         console.log child
