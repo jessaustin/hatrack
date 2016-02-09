@@ -13,9 +13,10 @@ update = ->
       do (color, name, i) ->
         hats.insertAdjacentHTML 'beforeend', "
           <div id=hat-#{i} style='background-color:#{color}'>
-            <span class=hat>#{name}</span>
-            <img class=delete src=icons/000106-circle-cross-mark.png />
-            <img class=edit src=icons/000150-pencil.png />
+            <span class=hat title='Open new window with this hat'>#{
+              name}</span>
+            <img class=delete title=Delete src=icons/000106-circle-cross-mark.png />
+            <img class=edit title=Edit src=icons/000150-pencil.png />
           </div>"
         document.querySelector "#hat-#{i} .hat"
           .addEventListener 'click', ->
