@@ -27,12 +27,15 @@ update = ->
             chrome.storage.sync.set cookieHats: items, update # recurse
         document.querySelector "#hat-#{i} .edit"
           .addEventListener 'click', ->
-            alert "edit #{i}"
+            chrome.windows.create
+              url: "add.html?color=#{encodeURIComponent color}&name=#{
+                encodeURIComponent name}&index=#{i}"
+              type: 'popup'
 
 window.addEventListener 'focus', update
 
 document.querySelector '#add'
   .addEventListener 'click', (event) ->
     chrome.windows.create
-      url: 'add.html'
+      url: "add.html?color=#{encodeURIComponent '#00ff00'}"
       type: 'popup'
