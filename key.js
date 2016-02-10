@@ -1,1 +1,0 @@
-var storageKey = 'cookieHats';

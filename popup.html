@@ -1,26 +1,21 @@
 <!doctype html>
 <!--
-  Copyright (c) 2016 Jess Austin <jess.austin@gmail.com>
+  Copyright © 2016 Jess Austin <jess.austin@gmail.com>
   Released under GNU Affero General Public License, version 3
 -->
 <style type=text/css>
-  button, div {
-    margin-bottom: 5px;
-    clear: right
-  }
-  /* keep the icons inside the div */
-  div::after {
-    content: "";
-    display: block;
-    clear: both
-  }
   button {
-    float: right
+    width: 100%;
+    margin-bottom: 5px;
+    text-align: left
   }
-  button img, div img {
+  button img {
     float: right;
-    vertical-align: middle;
-    margin-left: 3px
+    vertical-align: middle
+  }
+  button#add {
+    width: auto;
+    float: right
   }
 </style>
 <link rel=stylesheet href=style.css>
@@ -29,5 +24,5 @@
   <span>Add New Hat</span>
   <img src=icons/000104-plus.png />
 </button>
-<script src=key.js></script>
+<script src=storage.js></script>
 <script src=popup.js></script>
