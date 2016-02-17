@@ -3,22 +3,25 @@ Copyright © 2016 Jess Austin <jess.austin@gmail.com>
 Released under GNU Affero General Public License, version 3
 ###
 
-create = (url) ->
+create = (url, x, y) ->
   chrome.windows.create
     url: url
     type: 'popup'
     state: 'normal'
-    focused: yes
+#    focused: no
     height: 90
     width: 700
-  ,
-    ({tabs: [ child ] }) ->
-      console.log child
+    left: x
+    top: y
+#  ,
+#    ({tabs: [ { windowId } ] }) ->
+#      chrome.windows.update windowId, drawAttention: yes
 
 document.querySelector '#add'
-  .addEventListener 'click', ->
+  .addEventListener 'click', ({screenX, screenY}) ->
+    console.log event
     # XXX randomize!
-    create "edit.html?color=#{encodeURIComponent '#00ff00'}"
+    create "edit.html?color=#{encodeURIComponent '#00ff00'}", screenX, screenY
 
 update = ->
   storage.get (items) ->
@@ -33,24 +36,26 @@ update = ->
           <button id=hat-#{i} style='background-color:#{color}'
               title='Open new window with this hat'>
             #{name}
-            <img class=delete title=Delete src=icons/000106-circle-cross-mark.png />
-            <img class=edit title=Edit src=icons/000150-pencil.png />
+            <div>
+              <img class=edit title=Edit src=icons/edit.png />
+              <img class=delete title=Delete src=icons/delete.png />
+            </div>
           </button>"
         document.querySelector "#hat-#{i}"
           .addEventListener 'click', ->
             alert "hat #{i}"
             window.close()
+        document.querySelector "#hat-#{i} .edit"
+          .addEventListener 'click', (event) ->
+            event.stopPropagation()
+            create "edit.html?color=#{encodeURIComponent color}&name=#{
+                encodeURIComponent name}&index=#{i}"
         # XXX might want to confirm before deleting?
         document.querySelector "#hat-#{i} .delete"
           .addEventListener 'click', (event) ->
             event.stopPropagation()
             items.splice i, 1
             storage.set items, update # recurse
-        document.querySelector "#hat-#{i} .edit"
-          .addEventListener 'click', (event) ->
-            event.stopPropagation()
-            create "edit.html?color=#{encodeURIComponent color}&name=#{
-                encodeURIComponent name}&index=#{i}"
     document.querySelector 'button'
       .focus()
 
