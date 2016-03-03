@@ -10,6 +10,6 @@ button, input, label {
   border-radius: 7px;
   padding: 3px
 }
-img {
+img, button span {
   vertical-align: middle
 }
