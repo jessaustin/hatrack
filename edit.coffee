@@ -22,8 +22,8 @@ document.querySelector '#add'
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
 
-window.addEventListener 'blur', ->
-  window.close() unless colorWidgetOpen
+#window.addEventListener 'blur', ->
+#  window.close() unless colorWidgetOpen
 
 document.querySelector '#color'
   .addEventListener 'click', ->     # the color widget has been opened
@@ -43,7 +43,32 @@ document.querySelector 'form'
         window.close()
 
 ### XXX
-window.addEventListener 'load', ->
+window.addEventListener 'keydown', (event) ->
+  console.log event
+
+window.addEventListener 'load', (event) ->
+  evt = document.createEvent 'KeyboardEvent'
+  Object.defineProperty evt, 'keyCode',
+    get: -> 9
+  Object.defineProperty evt, 'which',
+    get: -> 9
+#  Object.defineProperty evt, 'isTrusted',
+#    get: -> yes
+  Object.defineProperty evt, 'keyIdentifier',
+    get: -> "U+0009"
+  Object.defineProperty evt, 'metaKey',
+    get: -> no
+  Object.defineProperty evt, 'shiftKey',
+    get: -> no
+  Object.defineProperty evt, 'code',
+    get: -> 'Tab'
+  Object.defineProperty evt, 'srcElement',
+    get: -> document.querySelector '#name'
+  Object.defineProperty evt, 'target',
+    get: -> document.querySelector '#name'
+  evt.initKeyboardEvent 'keydown', yes, yes, document.defaultView, no, no, no, no, 9, 9
+  console.log evt
+  document.dispatchEvent evt
   x = 0
   x = window.setInterval ->
     if document.hasFocus()
@@ -62,3 +87,4 @@ Object.getOwnPropertyNames window
     window.addEventListener evt, (ev) ->
       console.log ev
 ###
+
