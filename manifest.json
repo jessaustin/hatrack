@@ -17,6 +17,10 @@
     "default_popup": "popup.html",
     "default_title": "click to wear a different hat!"
   },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
   "permissions": [
     "storage"
   ],

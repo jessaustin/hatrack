@@ -3,7 +3,7 @@
 command = (arg='') ->
   "coffee --watch --compile --map #{arg}"
 
-normal = 'edit.coffee popup.coffee'
+normal = 'edit.coffee popup.coffee options.coffee'
 bare = '--bare storage.coffee'
 
 # XXX should spawn() first?
