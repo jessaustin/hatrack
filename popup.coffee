@@ -27,10 +27,10 @@ hue2rgb = (hue) ->
     when 3 then [ P, q, V ]
     when 4 then [ t, P, V ]
     when 5 then [ V, P, q ]
-  '#' + (hex(Math.floor 255 * c) for c in [r, g, b]).join ''
+  '#' + (hex Math.floor 255 * c for c in [r, g, b]).join ''
 
 rgb2hue = (rgb) ->
-  [r, g, b] = ((parseInt rgb[x..x+1], 16) / 255 for x in [1..6] by 2)
+  [r, g, b] = (parseInt(rgb[x..x+1], 16) / 255 for x in [1..6] by 2)
   max = Math.max r, g, b
   diff = max - Math.min r, g, b
   unless diff
@@ -43,7 +43,7 @@ rgb2hue = (rgb) ->
 
 bg2rgb = (bg) ->
   [ _, r, g, b ] = bg.split /(?:rgb\()|(?:, )|\)/
-  '#' + (hex(parseInt c) for c in [r, g, b]).join ''
+  '#' + (hex parseInt c for c in [r, g, b]).join ''
 
 # use of golden ratio inspired by
 # //martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
@@ -66,14 +66,10 @@ create = (url, x, y) ->
     url: url
     type: 'popup'
     state: 'normal'
-#    focused: no
     height: 86
     width: 802
     left: x
     top: y
-#  ,
-#    ({tabs: [ { windowId } ] }) ->
-#      chrome.windows.update windowId, drawAttention: yes
 
 # don't frighten the user with a blank menu
 storage.get (items) ->
