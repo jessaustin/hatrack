@@ -3,7 +3,8 @@ Copyright © 2016 Jess Austin <jess.austin@gmail.com>
 Released under GNU Affero General Public License, version 3
  */
 body {
-  min-width: 200px
+  min-width: 200px;
+  overflow: hidden
 }
 button, input, label {
   font-size: 22px;

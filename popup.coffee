@@ -67,8 +67,8 @@ create = (url, x, y) ->
     type: 'popup'
     state: 'normal'
 #    focused: no
-    height: 90
-    width: 791
+    height: 86
+    width: 802
     left: x
     top: y
 #  ,
@@ -112,13 +112,12 @@ window.addEventListener 'focus', update
 document.addEventListener 'click',
   ({screenX, screenY, target: {className, id, parentNode: {parentNode}}}) ->
     if className is 'open'
-      # XXX drag and drop!
       [ ..., id ] = id.split '-'
       alert "hat #{id}"
       window.close()
     else
-      { id, style } = parentNode
-      [ ..., id ] = id.split '-'
+      { id, style } = parentNode ? {}
+      [ ..., id ] = id?.split?('-') ? [ null ]
       id = parseInt id
       if className is 'delete'
         # XXX might want to confirm before deleting?
@@ -130,6 +129,38 @@ document.addEventListener 'click',
             encodeURIComponent parentNode.querySelector('span').innerText}",
           screenX, screenY
 
+# drag and drop
+dragging = null
+
+document.addEventListener 'dragstart', ({ dataTransfer, target }) ->
+  target.classList.add 'dragging'      # it seems this never has to be removed?
+  [ ..., id ] = target.id.split '-'
+  dragging = target
+  dataTransfer.effectAllowed = 'move'
+  dataTransfer.setData 'text/plain', id
+
+document.addEventListener 'dragenter', ({ target: { classList }}) ->
+  classList.add 'over'
+
+document.addEventListener 'dragleave', ({ target: { classList }}) ->
+  classList.remove 'over'
+
+document.addEventListener 'dragover', (event) ->
+  event.preventDefault()
+  event.dataTransfer.dropEffect = 'move'
+
+document.addEventListener 'drop', ({ dataTransfer, target }) ->
+  unless target is dragging
+    [ ..., id ] = target.id.split '-'
+    [ moved ] = items.splice dataTransfer.getData('text/plain'), 1
+    items.splice id, 0, moved
+    storage.set items, update
+  dragging = null
+
+document.addEventListener 'dragend', ({ target: { classList }}) ->
+  classList.remove? 'dragging', 'over'
+
+# open the edit window to make a new hat
 document.querySelector '#add'
   .addEventListener 'click', ({screenX, screenY}) ->
     create "edit.html?color=#{encodeURIComponent pickNewColor (

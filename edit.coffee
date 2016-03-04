@@ -23,8 +23,8 @@ document.querySelector '#add'
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
 
-window.addEventListener 'blur', ->
-  window.close() unless colorWidgetOpen
+#window.addEventListener 'blur', ->
+#  window.close() unless colorWidgetOpen
 
 document.querySelector '#color'
   .addEventListener 'click', ->     # the color widget has been opened
@@ -46,7 +46,3 @@ document.querySelector 'form'
 document.querySelector '#cancel'
   .addEventListener 'click', ->
     window.close()
-
-window.onload = ->
-  document.querySelector 'input'
-    .focus()
