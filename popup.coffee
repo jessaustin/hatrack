@@ -68,7 +68,7 @@ create = (url, x, y) ->
     state: 'normal'
 #    focused: no
     height: 90
-    width: 700
+    width: 791
     left: x
     top: y
 #  ,

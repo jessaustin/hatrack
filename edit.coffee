@@ -9,8 +9,9 @@ for pair in window.location.search.substring(1).split '&'
   [ key, val ] = pair.split '='
   query[key] = decodeURIComponent val
 
-document.querySelector '#name'
-  .setAttribute 'value', query.name if query.name?
+if query.name?
+  document.querySelector '#name'
+    .setAttribute 'value', query.name
 
 document.querySelector '#color'
   .setAttribute 'value', query.color
@@ -22,8 +23,8 @@ document.querySelector '#add'
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
 
-#window.addEventListener 'blur', ->
-#  window.close() unless colorWidgetOpen
+window.addEventListener 'blur', ->
+  window.close() unless colorWidgetOpen
 
 document.querySelector '#color'
   .addEventListener 'click', ->     # the color widget has been opened
@@ -42,49 +43,10 @@ document.querySelector 'form'
       storage.set items, ->
         window.close()
 
-### XXX
-window.addEventListener 'keydown', (event) ->
-  console.log event
+document.querySelector '#cancel'
+  .addEventListener 'click', ->
+    window.close()
 
-window.addEventListener 'load', (event) ->
-  evt = document.createEvent 'KeyboardEvent'
-  Object.defineProperty evt, 'keyCode',
-    get: -> 9
-  Object.defineProperty evt, 'which',
-    get: -> 9
-#  Object.defineProperty evt, 'isTrusted',
-#    get: -> yes
-  Object.defineProperty evt, 'keyIdentifier',
-    get: -> "U+0009"
-  Object.defineProperty evt, 'metaKey',
-    get: -> no
-  Object.defineProperty evt, 'shiftKey',
-    get: -> no
-  Object.defineProperty evt, 'code',
-    get: -> 'Tab'
-  Object.defineProperty evt, 'srcElement',
-    get: -> document.querySelector '#name'
-  Object.defineProperty evt, 'target',
-    get: -> document.querySelector '#name'
-  evt.initKeyboardEvent 'keydown', yes, yes, document.defaultView, no, no, no, no, 9, 9
-  console.log evt
-  document.dispatchEvent evt
-  x = 0
-  x = window.setInterval ->
-    if document.hasFocus()
-      window.clearInterval x
-    document.querySelector 'input'
-      .focus()
-    console.log x, document.hasFocus()
-  ,
-    500
-
-Object.getOwnPropertyNames window
-  .filter (key) -> key.slice(0, 2) is 'on'
-  .map (key) -> key.slice 2
-  .forEach (evt) ->
-    console.log evt
-    window.addEventListener evt, (ev) ->
-      console.log ev
-###
-
+window.onload = ->
+  document.querySelector 'input'
+    .focus()
