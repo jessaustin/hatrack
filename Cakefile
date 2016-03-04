@@ -1,6 +1,13 @@
-{ exec } = require 'child_process'
-task 'build', 'Build!', ->
-  exec 'coffee --watch --compile --map edit.coffee popup.coffee', (err) ->
-    throw err if err
-  exec 'coffee --watch --compile --map --bare storage.coffee', (err) ->
-    throw err if err
+{ exec, spawn } = require 'child_process'
+
+command = (arg='') ->
+  "coffee --watch --compile --map #{arg}"
+
+normal = 'edit.coffee popup.coffee'
+bare = '--bare storage.coffee'
+
+# XXX should spawn() first?
+task 'watch', 'Watch coffeescript files and build them when they change.', ->
+  for arg in [ normal, bare ]
+    exec command(arg), (err) ->
+      throw err if err
