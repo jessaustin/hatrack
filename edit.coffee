@@ -17,18 +17,21 @@ document.querySelector '#color'
   .setAttribute 'value', query.color
 
 document.querySelector '#add'
-  .insertAdjacentHTML 'afterbegin',
-      "<span>#{if query.index? then 'Save' else 'Add'}</span>"
+  .insertAdjacentHTML 'afterbegin', "<span>#{if query.index? then 'Save' else
+    'Add'}</span>"
 
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
 
-#window.addEventListener 'blur', ->
-#  window.close() unless colorWidgetOpen
+# XXX there is a bug here, because we can't figure out how to focus() on the
+# window when it loads, so it doesn't close if you click on another window
+# first
+window.addEventListener 'blur', ->
+  window.close() unless colorWidgetOpen
 
 document.querySelector '#color'
-  .addEventListener 'click', ->     # the color widget has been opened
-    colorWidgetOpen = yes
+  .addEventListener 'click', ->
+    colorWidgetOpen = yes                         # the color widget is opening
 
 window.addEventListener 'focus', -> # color widget is modal, so it's closed now
   colorWidgetOpen = no
@@ -43,6 +46,7 @@ document.querySelector 'form'
       storage.set items, ->
         window.close()
 
+# cancel button
 document.querySelector '#cancel'
   .addEventListener 'click', ->
     window.close()
