@@ -3,6 +3,8 @@ Copyright © 2016 Jess Austin <jess.austin@gmail.com>
 Released under GNU Affero General Public License, version 3
 ###
 
+{ i18n: { getMessage } } = chrome
+
 # handle query params set by parent
 query = {}
 for pair in window.location.search.substring(1).split '&'
