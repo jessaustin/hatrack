@@ -14,3 +14,21 @@ button, input, label {
 img, button span {
   vertical-align: middle
 }
+button.hat {
+  text-align: __MSG_@@bidi_start_edge__;
+  width: 100%
+}
+button.hat div {
+  float: __MSG_@@bidi_end_edge__
+}
+button#add {
+  width: auto;
+  float: __MSG_@@bidi_end_edge__
+}
+button.dragging.hat, button.dragging.hat.over {
+  opacity: 0.7
+}
+button.hat.over {
+  border-style: dashed;
+  opacity: 0.3
+}

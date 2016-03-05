@@ -16,7 +16,7 @@ if query.name?
 document.querySelector '#color'
   .setAttribute 'value', query.color
 
-document.querySelector '#add'
+document.querySelector '#ok'
   .insertAdjacentHTML 'afterbegin', "<span>#{if query.index? then 'Save' else
     'Add'}</span>"
 

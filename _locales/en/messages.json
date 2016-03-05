@@ -1,0 +1,14 @@
+{
+  "extName": {
+    "message": "Hatrack",
+    "description": "name of this extension"
+  },
+  "extDesc": {
+    "message": "Wear different hats in different windows.",
+    "description": "description of this extension"
+  },
+  "actDefault": {
+    "message": "click to wear a different hat!",
+    "description": "default tooltip for browser action"
+  }
+}

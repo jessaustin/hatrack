@@ -91,7 +91,7 @@ update = ->
     for { color, name }, i in items
       do (color, name, i) ->
         hats.insertAdjacentHTML 'beforeend', "
-          <button id=hat-#{i} class=open style='background-color:#{color}'
+          <button id=hat-#{i} class=hat style='background-color:#{color}'
               draggable=true title='Open new window with this hat'>
             <span>#{name}</span>
             <div>
@@ -107,7 +107,7 @@ window.addEventListener 'focus', update
 
 document.addEventListener 'click',
   ({screenX, screenY, target: {className, id, parentNode: {parentNode}}}) ->
-    if className is 'open'
+    if className is 'hat'
       [ ..., id ] = id.split '-'
       alert "hat #{id}"
       window.close()
