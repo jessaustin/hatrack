@@ -37,7 +37,7 @@
   "default_locale": "en",
   "content_security_policy": "default-src 'self'; style-src 'unsafe-inline'",
   "incognito": "split",
-  "minimum_chrome_version": "1",
+  "minimum_chrome_version": "40",
   "permissions": [
     "storage"
   ],

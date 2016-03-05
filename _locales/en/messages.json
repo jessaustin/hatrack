@@ -10,5 +10,45 @@
   "actDefault": {
     "message": "click to wear a different hat!",
     "description": "default tooltip for browser action"
+  },
+  "popAddHat": {
+    "message": "Add New Hat",
+    "description": "the bottom button in popup; opens edit window for new hat"
+  },
+  "popEmptyDefaultHat": {
+    "message": "My First Hat",
+    "description": "generic name for hat automatically created when no hats exist"
+  },
+  "popHatOpenWindow": {
+    "message": "Open new window with this hat",
+    "description": "tooltip for entire hat button: press it to open a new window"
+  },
+  "popHatEdit": {
+    "message": "Edit this hat",
+    "description": "tooltip for edit icon"
+  },
+  "popHatDelete": {
+    "message": "Delete this hat",
+    "description": "tooltip for delete icon"
+  },
+  "editSpanParentName": {
+    "message": "Name:",
+    "description": "label for input for name of hat"
+  },
+  "editSpanParentColor": {
+    "message": "Color:",
+    "description": "label for input for color of hat"
+  },
+  "editSpanParentOkSave": {
+    "message": "Save Hat",
+    "description": "button text for saving a hat"
+  },
+  "editSpanParentOkAdd": {
+    "message": "Add Hat",
+    "description": "button text for adding a hat"
+  },
+  "editSpanParentCancel": {
+    "message": "Cancel",
+    "description": "cancel editing without saving"
   }
 }

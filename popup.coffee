@@ -71,10 +71,21 @@ create = (url, x, y) ->
     left: x
     top: y
 
+# L10n
+{ i18n: { getMessage } } = chrome
+
+document.querySelector '#add'
+  .title = getMessage 'popAddHat'
+
+document.querySelector '#add span'
+  .innerText = getMessage 'popAddHat'
+
 # don't frighten the user with a blank menu
 storage.get (items) ->
   unless items.length
-    storage.set [ name: 'My First Hat', color: hue2rgb Math.random() ], ->
+    storage.set [
+      name: getMessage('popEmptyDefaultHat'), color: hue2rgb Math.random()
+    ], ->
       update()
 
 # script-global list, written by update(), read by everyone
@@ -92,11 +103,13 @@ update = ->
       do (color, name, i) ->
         hats.insertAdjacentHTML 'beforeend', "
           <button id=hat-#{i} class=hat style='background-color:#{color}'
-              draggable=true title='Open new window with this hat'>
+              draggable=true title='#{getMessage 'popHatOpenWindow'}'>
             <span>#{name}</span>
             <div>
-              <img class=edit title=Edit src=icons/edit.png />
-              <img class=delete title=Delete src=icons/delete.png />
+              <img class=edit title='#{getMessage 'popHatEdit'}'
+                src=icons/edit.png />
+              <img class=delete title='#{getMessage 'popHatDelete'}'
+                src=icons/delete.png />
             </div>
           </button>"
     document.querySelector 'button'

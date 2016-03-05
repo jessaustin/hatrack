@@ -10,15 +10,19 @@ for pair in window.location.search.substring(1).split '&'
   query[key] = decodeURIComponent val
 
 if query.name?
-  document.querySelector '#name'
+  document.querySelector '#name input'
     .setAttribute 'value', query.name
 
-document.querySelector '#color'
+document.querySelector '#color input'
   .setAttribute 'value', query.color
 
-document.querySelector '#ok'
-  .insertAdjacentHTML 'afterbegin', "<span>#{if query.index? then 'Save' else
-    'Add'}</span>"
+for span in document.querySelectorAll 'span'
+  do (span) ->
+    { parentNode: { id } } = span
+    unless id is 'ok'
+      span.innerText = getMessage "editSpanParent#{id}"
+    else
+      span.innerText = getMessage "editSpanParent#{id}#{if query.index? then 'Save' else 'Add'}"
 
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
@@ -29,7 +33,7 @@ colorWidgetOpen = no
 window.addEventListener 'blur', ->
   window.close() unless colorWidgetOpen
 
-document.querySelector '#color'
+document.querySelector '#color input'
   .addEventListener 'click', ->
     colorWidgetOpen = yes                         # the color widget is opening
 
