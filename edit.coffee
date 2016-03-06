@@ -24,6 +24,7 @@ for span in document.querySelectorAll 'span'
     unless id is 'ok'
       span.innerText = getMessage "editSpanParent#{id}"
     else
+      # XXX this is not graceful
       span.innerText = getMessage "editSpanParent#{id}#{if query.index? then 'Save' else 'Add'}"
 
 # close window on blur, unless the blur is due to opening a color widget

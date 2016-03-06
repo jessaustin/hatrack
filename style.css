@@ -3,26 +3,18 @@ Copyright © 2016 Jess Austin <jess.austin@gmail.com>
 Released under GNU Affero General Public License, version 3
  */
 body {
-  min-width: 200px;
-  overflow: hidden
+  min-width: 200px
 }
 button, input, label {
-  font-size: 22px;
   border-radius: 7px;
+  font-size: 22px;
   padding: 3px
-}
-img, button span {
-  vertical-align: middle
 }
 button.hat {
   text-align: __MSG_@@bidi_start_edge__;
   width: 100%
 }
-button.hat div {
-  float: __MSG_@@bidi_end_edge__
-}
-button#add {
-  width: auto;
+button#add, button.hat div {
   float: __MSG_@@bidi_end_edge__
 }
 button.dragging.hat, button.dragging.hat.over {
@@ -31,4 +23,7 @@ button.dragging.hat, button.dragging.hat.over {
 button.hat.over {
   border-style: dashed;
   opacity: 0.3
+}
+button span, img {
+  vertical-align: middle
 }
