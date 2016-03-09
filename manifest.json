@@ -13,8 +13,8 @@
   },
   "browser_action": {
     "default_icon": {
-      "19": "icons/19.png",
-      "38": "icons/38.png"
+      "19": "icons/default-hat-19.png",
+      "38": "icons/default-hat-38.png"
     },
     "default_popup": "popup.html",
     "default_title": "__MSG_actDefault__"

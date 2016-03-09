@@ -79,15 +79,14 @@ document.querySelector '#add'
   .title = getMessage 'popAddHat'
 
 document.querySelector '#add span'
-  .innerText = getMessage 'popAddHat'
+  .insertAdjacentHTML 'beforeend', getMessage 'popAddHat'
 
 # don't frighten the user with a blank menu
 storage.get (items) ->
   unless items.length
     storage.set [
       name: getMessage('popEmptyDefaultHat'), color: hue2rgb Math.random()
-    ], ->
-      update()
+    ], update
 
 # script-global list, written by update(), read by everyone
 items = []
@@ -125,34 +124,36 @@ document.addEventListener 'click', ({target}) ->
     [ ..., id ] = target.id.split '-'
     alert "hat #{id}"
     window.close()
-  else
-      { id, style: } = target?.parentNode?.parentNode?
-      [ ..., id ] = id.split '-'
-      id = parseInt id
-    if className is 'edit'
-      create "edit.html?index=#{id}&color=#{
-          encodeURIComponent bg2rgb backgroundColor}&name=#{
-          encodeURIComponent target.parentNode.parentNode.querySelector('span').innerText}",
-        screenX, screenY
-    else if className is 'delete'
-      target.parentNode.insertAdjacentHTML 'beforeend', "
-        <div id=really>
-          <label>#{getMessage 'popReallyDelete'}
-            <button id=not-really>#{getMessage 'popReallyDeleteNo'}</button>
-            <button id=yes-really>#{getMessage 'popReallyDeleteYes'}</button>
-          </label>
-        </div>"
-      really = target.parentNode.querySelector '#really'
-      really.addEventListener 'blur', ->
+  else if className is 'edit'
+    { id, style: { backgroundColor } } = target.parentNode.parentNode
+    [ ..., id ] = id.split '-'
+    id = parseInt id
+    create "edit.html?index=#{id}&color=#{
+        encodeURIComponent bg2rgb backgroundColor}&name=#{
+        encodeURIComponent target.parentNode.parentNode.querySelector('span').innerText}",
+      screenX, screenY
+  else if className is 'delete'
+    { id } = target.parentNode.parentNode
+    [ ..., id ] = id.split '-'
+    id = parseInt id
+    target.parentNode.insertAdjacentHTML 'beforeend', "
+      <div id=really>
+        <label>#{getMessage 'popReallyDelete'}
+          <button id=not-really autofocus>#{getMessage 'popReallyDeleteNo'}</button>
+          <button id=yes-really>#{getMessage 'popReallyDeleteYes'}</button>
+        </label>
+      </div>"
+    really = target.parentNode.querySelector '#really'
+    really.addEventListener 'blur', ->
+      really.remove()
+    really.querySelector '#not-really'
+      .addEventListener 'click', ->
         really.remove()
-      really.querySelector '#not-really'
-        .addEventListener 'click', ->
-          really.remove()
-      really.querySelector '#yes-really'
-        .addEventListener 'click', ->
-          items.splice id, 1
-          really.remove()
-          storage.set items, update
+    really.querySelector '#yes-really'
+      .addEventListener 'click', ->
+        items.splice id, 1
+        really.remove()
+        storage.set items, update
 
 # drag and drop
 dragging = null
