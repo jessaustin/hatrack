@@ -70,6 +70,7 @@ create = (url, x, y) ->
     width: 802
     left: x
     top: y
+    focused: yes
 
 # L10n
 { i18n: { getMessage } } = chrome
@@ -118,25 +119,40 @@ update = ->
 # has to be window; not sure why
 window.addEventListener 'focus', update
 
-document.addEventListener 'click',
-  ({screenX, screenY, target: {className, id, parentNode: {parentNode}}}) ->
-    if className is 'hat'
+document.addEventListener 'click', ({target}) ->
+  { className } = target
+  if className is 'hat'
+    [ ..., id ] = target.id.split '-'
+    alert "hat #{id}"
+    window.close()
+  else
+      { id, style: } = target?.parentNode?.parentNode?
       [ ..., id ] = id.split '-'
-      alert "hat #{id}"
-      window.close()
-    else
-      { id, style } = parentNode ? {}
-      [ ..., id ] = id?.split?('-') ? [ null ]
       id = parseInt id
-      if className is 'delete'
-        # XXX might want to confirm before deleting?
-        items.splice id, 1
-        storage.set items, update
-      else if className is 'edit'
-        create "edit.html?index=#{id}&color=#{
-            encodeURIComponent bg2rgb style.backgroundColor}&name=#{
-            encodeURIComponent parentNode.querySelector('span').innerText}",
-          screenX, screenY
+    if className is 'edit'
+      create "edit.html?index=#{id}&color=#{
+          encodeURIComponent bg2rgb backgroundColor}&name=#{
+          encodeURIComponent target.parentNode.parentNode.querySelector('span').innerText}",
+        screenX, screenY
+    else if className is 'delete'
+      target.parentNode.insertAdjacentHTML 'beforeend', "
+        <div id=really>
+          <label>#{getMessage 'popReallyDelete'}
+            <button id=not-really>#{getMessage 'popReallyDeleteNo'}</button>
+            <button id=yes-really>#{getMessage 'popReallyDeleteYes'}</button>
+          </label>
+        </div>"
+      really = target.parentNode.querySelector '#really'
+      really.addEventListener 'blur', ->
+        really.remove()
+      really.querySelector '#not-really'
+        .addEventListener 'click', ->
+          really.remove()
+      really.querySelector '#yes-really'
+        .addEventListener 'click', ->
+          items.splice id, 1
+          really.remove()
+          storage.set items, update
 
 # drag and drop
 dragging = null

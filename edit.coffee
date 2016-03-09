@@ -27,6 +27,18 @@ for span in document.querySelectorAll 'span'
       # XXX this is not graceful
       span.innerText = getMessage "editSpanParent#{id}#{if query.index? then 'Save' else 'Add'}"
 
+window.addEventListener 'load', ->
+#  window.setTimeout ->
+  console.log 'load'
+#    window.close()
+#  i = document.querySelector 'input'
+#  i.click()
+#    i.blur()
+#    i.focus()
+#    console.log 'of shit'
+#  ,
+#    2000
+
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
 
@@ -34,14 +46,15 @@ colorWidgetOpen = no
 # window when it loads, so it doesn't close if you click on another window
 # first
 window.addEventListener 'blur', ->
-  window.close() unless colorWidgetOpen
+  console.log 'blurred'
+#  window.close() unless colorWidgetOpen
 
 document.querySelector '#color input'
   .addEventListener 'click', ->
     colorWidgetOpen = yes                         # the color widget is opening
 
-window.addEventListener 'focus', -> # color widget is modal, so it's closed now
-  colorWidgetOpen = no
+#window.addEventListener 'focus', -> # color widget is modal, so it's closed now
+#  colorWidgetOpen = no
 
 # save the (new or edited) hat
 document.querySelector 'form'

@@ -31,6 +31,18 @@
     "message": "Delete this hat",
     "description": "tooltip for delete icon"
   },
+  "popReallyDelete": {
+    "message": "Really Delete Hat?",
+    "description": "question to confirm the deletion of a hat"
+  },
+  "popReallyDeleteNo": {
+    "message": "Cancel Delete",
+    "description": "the default answer: don't delete the hat"
+  },
+  "popReallyDeleteYes": {
+    "message": "Really Delete",
+    "description": "user confirms intention to delete hat"
+  },
   "editSpanParentName": {
     "message": "Name:",
     "description": "label for input for name of hat"
