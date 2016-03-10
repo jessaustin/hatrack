@@ -18,6 +18,9 @@ if query.name?
 document.querySelector '#color input'
   .setAttribute 'value', query.color
 
+document.querySelector 'input#tag'
+  .setAttribute 'value', query.tag
+
 for span in document.querySelectorAll 'span'
   do (span) ->
     { id } = span.parentNode
@@ -44,10 +47,10 @@ window.addEventListener 'focus', -> # color widget is modal, so it's closed now
 document.querySelector 'form'
   .addEventListener 'submit', (event) ->
     event.preventDefault()
-    [ { value: name }, { value: color } ] = event.target.elements
-    storage.get (items) ->
-      items.splice query.index ? items.length, 1, { name, color }
-      storage.set items, ->
+    [ { value: name }, { value: color }, { value: tag } ] = event.target.elements
+    storage.getList (items) ->
+      items.splice query.index ? items.length, 1, { name, color, tag }
+      storage.setList items, ->
         # should we handle errors here?
         window.close()
 

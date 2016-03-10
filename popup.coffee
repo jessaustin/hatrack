@@ -41,10 +41,6 @@ rgb2hue = (rgb) ->
       when g then (b - r) / diff + 2
       when b then (r - g) / diff + 4
 
-bg2rgb = (bg) ->
-  [ _, r, g, b ] = bg.split /(?:rgb\()|(?:, )|\)/
-  '#' + (hex parseInt c for c in [r, g, b]).join ''
-
 # use of golden ratio inspired by
 # //martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
 # this is a bit more complicated than that case, since rather than generating
@@ -61,10 +57,10 @@ pickNewColor = (colors) ->
   hue2rgb hues[begin] + PHI * offset
 
 # regular gui stuff
-edit = ({ color, index, name, x, y }) ->
+edit = ({ color, index, name, tag, x, y }) ->
   chrome.windows.create
     url: "edit.html?#{("#{k}=#{encodeURIComponent v}" for k, v of {
-      color, index, name } when v?).join '&'}"
+      color, index, name, tag } when v?).join '&'}"
     type: 'popup'
     state: 'normal'
     height: 86
@@ -74,7 +70,7 @@ edit = ({ color, index, name, x, y }) ->
     focused: yes
 
 # L10n
-{ i18n: { getMessage } } = chrome
+{ getMessage } = chrome.i18n
 
 document.querySelector '#add'
   .title = getMessage 'popAddHat'
@@ -83,17 +79,19 @@ document.querySelector '#add span'
   .insertAdjacentHTML 'beforeend', getMessage 'popAddHat'
 
 # don't frighten the user with a blank menu
-storage.get (items) ->
+storage.getList (items) ->
   unless items.length
-    storage.set [
-      name: getMessage('popEmptyDefaultHat'), color: hue2rgb Math.random()
-    ], update
+    hat =
+      color: hue2rgb Math.random()
+      name: getMessage 'popEmptyDefaultHat'
+      tag: (Math.random() * Math.pow 2, 32).toString 16
+    storage.setList [ hat ], update
 
 # script-global list, written by update(), read by everyone
 items = []
 
 update = ->
-  storage.get (gotten) ->
+  storage.getList (gotten) ->
     items = gotten
     hats = document.querySelector '#hats'
     # start with empty div
@@ -122,21 +120,17 @@ window.addEventListener 'focus', update
 document.addEventListener 'click', ({ target, screenX, screenY }) ->
   { className } = target
   if className is 'hat'
-    [ ..., id ] = target.id.split '-'
-    alert "hat #{id}"
+    [ ..., index ] = target.id.split '-'
+    alert "hat #{index}"
     window.close()
   else
-    { parentNode } = target.parentNode ? {}
-    { id, style: { backgroundColor } } = parentNode ? {}
-    [ ..., id ] = id?.split? '-'
-    id = parseInt id
+    { id } = target.parentNode.parentNode ? {}
+    [ ..., index ] = id?.split? '-'
+    index = parseInt index
+    { color, name, tag } = items[index] ? {}
     if className is 'edit'
-      edit
-        color: bg2rgb backgroundColor
-        index: id
-        name: parentNode.querySelector('span').innerText
-        x: screenX
-        y: screenY
+      [ x, y ] = [ screenX, screenY ]
+      edit { color, index, name, tag, x, y }
     else if className is 'delete'
       target.parentNode.insertAdjacentHTML 'beforeend', "
         <div id=really>
@@ -154,15 +148,17 @@ document.addEventListener 'click', ({ target, screenX, screenY }) ->
           really.remove()
       really.querySelector '#yes-really'
         .addEventListener 'click', ->
-          items.splice id, 1
+          items.splice index, 1
           really.remove()
-          storage.set items, update
+          storage.setList items, ->
+            storage.removeCache tag ? '', update
 
 # open the edit window to make a new hat
 document.querySelector '#add'
   .addEventListener 'click', ({ screenX, screenY }) ->
     edit
       color: pickNewColor (color for {color} in items)
+      tag: (Math.random() * Math.pow 2, 32).toString 16
       x: screenX
       y: screenY
 
@@ -171,10 +167,10 @@ dragging = null
 
 document.addEventListener 'dragstart', ({ dataTransfer, target }) ->
   target.classList.add 'dragging'      # it seems this never has to be removed?
-  [ ..., id ] = target.id.split '-'
+  [ ..., index ] = target.id.split '-'
   dragging = target
   dataTransfer.effectAllowed = 'move'
-  dataTransfer.setData 'text/plain', id
+  dataTransfer.setData 'text/plain', index
 
 document.addEventListener 'dragenter', ({ target: { classList }}) ->
   classList.add 'over'
@@ -188,10 +184,10 @@ document.addEventListener 'dragover', (event) ->
 
 document.addEventListener 'drop', ({ dataTransfer, target }) ->
   unless target is dragging
-    [ ..., id ] = target.id.split '-'
+    [ ..., index ] = target.id.split '-'
     [ moved ] = items.splice dataTransfer.getData('text/plain'), 1
-    items.splice id, 0, moved
-    storage.set items, update
+    items.splice index, 0, moved
+    storage.setList items, update
   dragging = null
 
 document.addEventListener 'dragend', ({ target: { classList }}) ->
