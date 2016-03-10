@@ -61,9 +61,10 @@ pickNewColor = (colors) ->
   hue2rgb hues[begin] + PHI * offset
 
 # regular gui stuff
-create = (url, x, y) ->
+edit = ({ color, index, name, x, y }) ->
   chrome.windows.create
-    url: url
+    url: "edit.html?#{("#{k}=#{encodeURIComponent v}" for k, v of {
+      color, index, name } when v?).join '&'}"
     type: 'popup'
     state: 'normal'
     height: 86
@@ -118,42 +119,52 @@ update = ->
 # has to be window; not sure why
 window.addEventListener 'focus', update
 
-document.addEventListener 'click', ({target}) ->
+document.addEventListener 'click', ({ target, screenX, screenY }) ->
   { className } = target
   if className is 'hat'
     [ ..., id ] = target.id.split '-'
     alert "hat #{id}"
     window.close()
-  else if className is 'edit'
-    { id, style: { backgroundColor } } = target.parentNode.parentNode
-    [ ..., id ] = id.split '-'
+  else
+    { parentNode } = target.parentNode ? {}
+    { id, style: { backgroundColor } } = parentNode ? {}
+    [ ..., id ] = id?.split? '-'
     id = parseInt id
-    create "edit.html?index=#{id}&color=#{
-        encodeURIComponent bg2rgb backgroundColor}&name=#{
-        encodeURIComponent target.parentNode.parentNode.querySelector('span').innerText}",
-      screenX, screenY
-  else if className is 'delete'
-    { id } = target.parentNode.parentNode
-    [ ..., id ] = id.split '-'
-    id = parseInt id
-    target.parentNode.insertAdjacentHTML 'beforeend', "
-      <div id=really>
-        <label>#{getMessage 'popReallyDelete'}
-          <button id=not-really autofocus>#{getMessage 'popReallyDeleteNo'}</button>
-          <button id=yes-really>#{getMessage 'popReallyDeleteYes'}</button>
-        </label>
-      </div>"
-    really = target.parentNode.querySelector '#really'
-    really.addEventListener 'blur', ->
-      really.remove()
-    really.querySelector '#not-really'
-      .addEventListener 'click', ->
+    if className is 'edit'
+      edit
+        color: bg2rgb backgroundColor
+        index: id
+        name: parentNode.querySelector('span').innerText
+        x: screenX
+        y: screenY
+    else if className is 'delete'
+      target.parentNode.insertAdjacentHTML 'beforeend', "
+        <div id=really>
+          <label>#{getMessage 'popReallyDelete'}
+            <button id=not-really autofocus>#{
+              getMessage 'popReallyDeleteNo'}</button>
+            <button id=yes-really>#{getMessage 'popReallyDeleteYes'}</button>
+          </label>
+        </div>"
+      really = target.parentNode.querySelector '#really'
+      really.addEventListener 'blur', ->
         really.remove()
-    really.querySelector '#yes-really'
-      .addEventListener 'click', ->
-        items.splice id, 1
-        really.remove()
-        storage.set items, update
+      really.querySelector '#not-really'
+        .addEventListener 'click', ->
+          really.remove()
+      really.querySelector '#yes-really'
+        .addEventListener 'click', ->
+          items.splice id, 1
+          really.remove()
+          storage.set items, update
+
+# open the edit window to make a new hat
+document.querySelector '#add'
+  .addEventListener 'click', ({ screenX, screenY }) ->
+    edit
+      color: pickNewColor (color for {color} in items)
+      x: screenX
+      y: screenY
 
 # drag and drop
 dragging = null
@@ -185,9 +196,3 @@ document.addEventListener 'drop', ({ dataTransfer, target }) ->
 
 document.addEventListener 'dragend', ({ target: { classList }}) ->
   classList.remove? 'dragging', 'over'
-
-# open the edit window to make a new hat
-document.querySelector '#add'
-  .addEventListener 'click', ({screenX, screenY}) ->
-    create "edit.html?color=#{encodeURIComponent pickNewColor (
-        color for {color} in items)}", screenX, screenY

@@ -17,11 +17,11 @@
   },
   "popEmptyDefaultHat": {
     "message": "My First Hat",
-    "description": "generic name for hat automatically created when no hats exist"
+    "description": "generic name for automatically-created hat"
   },
   "popHatOpenWindow": {
     "message": "Open new window with this hat",
-    "description": "tooltip for entire hat button: press it to open a new window"
+    "description": "tooltip for entire hat button: press to open a new window"
   },
   "popHatEdit": {
     "message": "Edit this hat",
@@ -43,24 +43,24 @@
     "message": "Really Delete",
     "description": "user confirms intention to delete hat"
   },
-  "editSpanParentName": {
+  "editName": {
     "message": "Name:",
     "description": "label for input for name of hat"
   },
-  "editSpanParentColor": {
+  "editColor": {
     "message": "Color:",
     "description": "label for input for color of hat"
   },
-  "editSpanParentOkSave": {
+  "editOkSave": {
     "message": "Save Hat",
     "description": "button text for saving a hat"
   },
-  "editSpanParentOkAdd": {
+  "editOkAdd": {
     "message": "Add Hat",
     "description": "button text for adding a hat"
   },
-  "editSpanParentCancel": {
+  "editCancel": {
     "message": "Cancel",
-    "description": "cancel editing without saving"
+    "description": "button text to cancel editing without saving"
   }
 }
