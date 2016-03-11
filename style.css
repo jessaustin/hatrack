@@ -50,3 +50,18 @@ button span, img {
 #really button {
   width: 100%
 }
+.hatName {
+  font-weight: bold
+}
+/* http://bettermotherfuckingwebsite.com/ */
+body {
+  margin: 40px auto;
+  max-width: 650px;
+  line-height: 1.6;
+  font-size: 18px;
+  color: #222;
+  padding: 0 10px
+}
+h1 {
+  line-height: 1.2
+}
