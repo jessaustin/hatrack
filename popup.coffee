@@ -57,20 +57,20 @@ pickNewColor = (colors) ->
   hue2rgb hues[begin] + PHI * offset
 
 # regular gui stuff
-edit = ({ color, index, name, tag, x, y }) ->
-  chrome.windows.create
-    url: "edit.html?#{("#{k}=#{encodeURIComponent v}" for k, v of {
-      color, index, name, tag } when v?).join '&'}"
+{ create } = chrome.windows
+{ getMessage } = chrome.i18n    # L10n
+
+buildQuery = (obj) ->
+  "?#{("#{k}=#{encodeURIComponent v}" for k, v of obj when v?).join '&'}"
+
+edit = ({ color, index, name, tag, screenX, screenY }) ->
+  create
+    url: 'edit.html' + buildQuery { color, index, name, tag }
     type: 'popup'
-    state: 'normal'
     height: 86
     width: 802
-    left: x
-    top: y
-    focused: yes
-
-# L10n
-{ getMessage } = chrome.i18n
+    left: screenX
+    top: screenY
 
 document.querySelector '#add'
   .title = getMessage 'popAddHat'
@@ -120,38 +120,39 @@ window.addEventListener 'focus', update
 document.addEventListener 'click', ({ target, screenX, screenY }) ->
   { className } = target
   if className is 'hat'
-    [ ..., index ] = target.id.split '-'
-    alert "hat #{index}"
-    window.close()
+    { id } = target
   else
-    { id } = target.parentNode.parentNode ? {}
-    [ ..., index ] = id?.split? '-'
-    index = parseInt index
-    { color, name, tag } = items[index] ? {}
-    if className is 'edit'
-      [ x, y ] = [ screenX, screenY ]
-      edit { color, index, name, tag, x, y }
-    else if className is 'delete'
-      target.parentNode.insertAdjacentHTML 'beforeend', "
-        <div id=really>
-          <label>#{getMessage 'popReallyDelete'}
-            <button id=not-really autofocus>#{
-              getMessage 'popReallyDeleteNo'}</button>
-            <button id=yes-really>#{getMessage 'popReallyDeleteYes'}</button>
-          </label>
-        </div>"
-      really = target.parentNode.querySelector '#really'
-      really.addEventListener 'blur', ->
+    { id } = target?.parentNode?.parentNode ? {}
+  [ ..., index ] = id?.split?('-') ? []
+  index = parseInt index
+  { color, name, tag } = items[index] ? {}
+  if className is 'hat'
+    create url: 'new.html' + buildQuery({ color, name, tag }), (w) ->
+      console.log w
+#        window.close()
+  else if className is 'edit'
+    edit { color, index, name, tag, screenX, screenY }
+  else if className is 'delete'
+    target.parentNode.insertAdjacentHTML 'beforeend', "
+      <div id=really>
+        <label>#{getMessage 'popReallyDelete'}
+          <button id=not-really autofocus>#{
+            getMessage 'popReallyDeleteNo'}</button>
+          <button id=yes-really>#{getMessage 'popReallyDeleteYes'}</button>
+        </label>
+      </div>"
+    really = target.parentNode.querySelector '#really'
+    really.addEventListener 'blur', ->
+      really.remove()
+    really.querySelector '#not-really'
+      .addEventListener 'click', ->
         really.remove()
-      really.querySelector '#not-really'
-        .addEventListener 'click', ->
-          really.remove()
-      really.querySelector '#yes-really'
-        .addEventListener 'click', ->
-          items.splice index, 1
-          really.remove()
-          storage.setList items, ->
-            storage.removeCache tag ? '', update
+    really.querySelector '#yes-really'
+      .addEventListener 'click', ->
+        items.splice index, 1
+        really.remove()
+        storage.setList items, ->
+          storage.removeCache tag ? '', update
 
 # open the edit window to make a new hat
 document.querySelector '#add'
@@ -159,8 +160,8 @@ document.querySelector '#add'
     edit
       color: pickNewColor (color for {color} in items)
       tag: (Math.random() * Math.pow 2, 32).toString 16
-      x: screenX
-      y: screenY
+      screenX: screenX
+      screenY: screenY
 
 # drag and drop
 dragging = null

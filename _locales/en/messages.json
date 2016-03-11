@@ -62,5 +62,15 @@
   "editCancel": {
     "message": "Cancel",
     "description": "button text to cancel editing without saving"
+  },
+  "newContent": {
+    "message": "In this window you're wearing the \"$HAT_NAME$\" hat. For web requests made by this window, you can choose to allow Hatrack to handle browser cookies, rather than letting Chrome itself do so. Every time you request a resource from a domain that you haven't requested while wearing this hat before, you will be asked if you want Hatrack to handle browser cookies for that domain. In this way, you'll be able to log into the same website using different accounts in different Hatrack windows, even if the website itself doesn't allow that. Hatrack syncs your domain preferences, but not the cookies themselves, so you'll have to log in again every time you open a new window with Hatrack. Have fun and enjoy wearing your \"$HAT_NAME$\" hat!",
+    "description": "explanatory text displayed in any Hatrack-created new window",
+    "placeholders": {
+      "hat_name": {
+        "content": "$1",
+        "example": "AWS Test Account"
+      }
+    }
   }
 }
