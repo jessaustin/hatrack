@@ -54,7 +54,7 @@ button span, img {
   font-weight: bold
 }
 /* http://bettermotherfuckingwebsite.com/ */
-body {
+body.separate {
   margin: 40px auto;
   max-width: 650px;
   line-height: 1.6;
