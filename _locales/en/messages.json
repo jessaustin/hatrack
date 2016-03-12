@@ -88,5 +88,15 @@
         "content": "</a>"
       }
     }
+  },
+  "optHeading": {
+    "message": "$EXT_NAME$ Options",
+    "description": "h1 heading for extension options window",
+    "placeholders": {
+      "ext_name": {
+        "content": "$1",
+        "example": "Hatrack"
+      }
+    }
   }
 }

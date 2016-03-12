@@ -63,5 +63,6 @@ body.separate {
   padding: 0 10px
 }
 h1 {
-  line-height: 1.2
+  line-height: 1.2;
+  font-weight: bold
 }
