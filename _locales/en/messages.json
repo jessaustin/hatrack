@@ -5,7 +5,7 @@
   },
   "extDesc": {
     "message": "Wear different hats in different windows.",
-    "description": "description of this extension"
+    "description": "short description of this extension"
   },
   "actDefault": {
     "message": "click to wear a different hat!",
@@ -64,12 +64,16 @@
     "description": "button text to cancel editing without saving"
   },
   "newContent": {
-    "message": "In this window you're wearing the $SPAN_OPEN$$HAT_NAME$$SPAN_CLOSE$ hat. For web requests made by this window, you can choose to allow $LINK_OPEN$Hatrack$LINK_CLOSE$ to handle browser cookies, rather than letting Chrome itself do so. Every time you request a resource from a domain that you haven't requested while wearing this hat before, you will be asked if you want $LINK_OPEN$Hatrack$LINK_CLOSE$ to handle browser cookies for that domain. In this way, you'll be able to log into the same website using different accounts in different $LINK_OPEN$Hatrack$LINK_CLOSE$ windows, even if the website itself doesn't allow that. $LINK_OPEN$Hatrack$LINK_CLOSE$ syncs your domain preferences, but not the cookies themselves, so you'll have to log in again every time you open a new window with $LINK_OPEN$Hatrack$LINK_CLOSE$. Have fun and enjoy wearing your $SPAN_OPEN$$HAT_NAME$$SPAN_CLOSE$ hat!",
+    "message": "In this window you're wearing the $SPAN_OPEN$$HAT_NAME$$SPAN_CLOSE$ hat. For web requests made by this window, you can choose to allow $LINK_OPEN$$EXT_NAME$$LINK_CLOSE$ to handle browser cookies, rather than letting Chrome itself do so. Every time you request a resource from a domain that you haven't requested while wearing this hat before, you will be asked if you want $LINK_OPEN$$EXT_NAME$$LINK_CLOSE$ to handle browser cookies for that domain. In this way, you'll be able to log into the same website using different accounts in different $LINK_OPEN$$EXT_NAME$$LINK_CLOSE$ windows, even if the website itself doesn't allow that. $LINK_OPEN$$EXT_NAME$$LINK_CLOSE$ syncs your domain preferences, but not the cookies themselves, so you'll have to log in again every time you open a new window with $LINK_OPEN$$EXT_NAME$$LINK_CLOSE$. Have fun and enjoy wearing your $SPAN_OPEN$$HAT_NAME$$SPAN_CLOSE$ hat!",
     "description": "explanatory text displayed in any Hatrack-created new window",
     "placeholders": {
       "hat_name": {
         "content": "$1",
         "example": "AWS Test Account"
+      },
+      "ext_name": {
+        "content": "$2",
+        "example": "Hatrack"
       },
       "span_open": {
         "content": "<span class=hatName>"
@@ -78,7 +82,7 @@
         "content": "</span>"
       },
       "link_open": {
-        "content": "<a href=\"https://github.com/jessaustin/hatrack\">"
+        "content": "<a href=https://github.com/jessaustin/hatrack>"
       },
       "link_close": {
         "content": "</a>"

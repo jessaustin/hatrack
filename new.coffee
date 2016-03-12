@@ -19,5 +19,7 @@ document.querySelector 'h1'
   .insertAdjacentHTML 'beforeend', query.name
 
 document.querySelector '#content'
-  .insertAdjacentHTML 'beforeend', "<p>#{getMessage 'newContent', query.name}
-      </p>"
+  .insertAdjacentHTML 'beforeend', "<p>#{getMessage 'newContent', [
+    query.name
+    getMessage 'extName'
+  ]}</p>"

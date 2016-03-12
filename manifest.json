@@ -39,9 +39,8 @@
   "incognito": "split",
   "minimum_chrome_version": "40",
   "permissions": [
-    "storage"
-  ],
-  "optional_permissions": [
+    "cookies",
+    "storage",
     "webRequest",
     "webRequestBlocking",
     "https://*/*"
