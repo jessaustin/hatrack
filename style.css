@@ -5,7 +5,7 @@ Released under GNU Affero General Public License, version 3
 body {
   background-color: #eee;
   min-width: 200px;
-  overflow: visible
+  overflow: hidden
 }
 #hats {
   margin-top: 28px
@@ -19,7 +19,7 @@ button.hat {
   text-align: __MSG_@@bidi_start_edge__;
   width: 100%
 }
-button#add, button.hat div {
+button#add, button.hat div, h1 + img {
   float: __MSG_@@bidi_end_edge__
 }
 button#add {
@@ -63,6 +63,7 @@ body.separate {
   padding: 0 10px
 }
 h1 {
+  display: inline-block;
   line-height: 1.2;
   font-weight: bold
 }

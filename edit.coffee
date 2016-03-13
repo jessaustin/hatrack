@@ -3,7 +3,7 @@ Copyright © 2016 Jess Austin <jess.austin@gmail.com>
 Released under GNU Affero General Public License, version 3
 ###
 
-{ i18n: { getMessage } } = chrome
+{ getMessage } = chrome.i18n
 
 # handle query params set by popup
 query = {}
@@ -11,9 +11,18 @@ for pair in window.location.search.substring(1).split '&'
   [ key, val ] = pair.split '='
   query[key] = decodeURIComponent val
 
-if query.name?
-  document.querySelector '#name input'
-    .setAttribute 'value', query.name
+titleString = "#{getMessage 'extName'} ::
+    #{getMessage if query.index? then 'editTitle' else 'editAddTitle'} "
+setTitle = (name) ->
+  document.title = titleString + if name?.length then ":: #{name}" else ''
+setTitle query.name
+
+input = document.querySelector '#name input'
+input.setAttribute 'value', query.name ? ''
+ok = document.querySelector '#ok'
+input.addEventListener 'input', ({ target: { value } }) ->
+  ok.removeAttribute 'disabled'
+  setTitle value
 
 document.querySelector '#color input'
   .setAttribute 'value', query.color
@@ -24,8 +33,16 @@ document.querySelector 'input#tag'
 for span in document.querySelectorAll 'span'
   do (span) ->
     { id } = span.parentNode
-    span.innerText = getMessage "edit#{id}#{
-      if id is 'ok' then (if query.index? then 'Save' else 'Add') else ''}"
+    if id is 'ok'
+      if query.index?
+        id = id + 'Save'
+        ok.setAttribute 'disabled', yes
+        document.querySelector '#color input'
+          .addEventListener 'input', ->
+            ok.removeAttribute 'disabled'
+      else
+        id = id + 'Add'
+    span.insertAdjacentHTML 'beforeend', getMessage 'edit' + id
 
 # close window on blur, unless the blur is due to opening a color widget
 colorWidgetOpen = no
@@ -47,7 +64,7 @@ window.addEventListener 'focus', -> # color widget is modal, so it's closed now
 document.querySelector 'form'
   .addEventListener 'submit', (event) ->
     event.preventDefault()
-    [ { value: name }, { value: color }, { value: tag } ] = event.target.elements
+    [{ value: name }, { value: color }, { value: tag }] = event.target.elements
     storage.getList (items) ->
       items.splice query.index ? items.length, 1, { name, color, tag }
       storage.setList items, ->

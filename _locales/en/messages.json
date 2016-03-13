@@ -43,6 +43,14 @@
     "message": "Really Delete",
     "description": "user confirms intention to delete hat"
   },
+  "editTitle": {
+    "message": "Edit Hat",
+    "description": "part of title of edit screen"
+  },
+  "editAddTitle": {
+    "message": "Add New Hat",
+    "description": "part of title of new hat edit screen"
+  },
   "editName": {
     "message": "Name:",
     "description": "label for input for name of hat"

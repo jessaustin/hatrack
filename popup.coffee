@@ -68,7 +68,7 @@ edit = ({ color, index, name, tag, screenX, screenY }) ->
     url: 'edit.html' + buildQuery { color, index, name, tag }
     type: 'popup'
     height: 86
-    width: 802
+    width: 794
     left: screenX
     top: screenY
 
