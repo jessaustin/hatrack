@@ -127,9 +127,20 @@ document.addEventListener 'click', ({ target, screenX, screenY }) ->
   index = parseInt index
   { color, name, tag } = items[index] ? {}
   if className is 'hat'
-    create url: 'new.html' + buildQuery({ color, name, tag }), (w) ->
-      console.log w
-#        window.close()
+    create url: 'new.html' + buildQuery({ color, name, tag }), ({ id, tabs }) ->
+      chrome.browserAction.setIcon
+        path:
+          19: 'icons/hat-19.svg'
+          38: 'icons/hat-38.svg'
+        tabId: tabs[0].id
+      chrome.tabs.onCreated.addListener (tab) ->
+        if id is tab.windowId
+          chrome.browserAction.setIcon
+            path:
+              19: 'icons/hat-19.svg'
+              38: 'icons/hat-38.svg'
+            tabId: tab.id
+      window.close()
   else if className is 'edit'
     edit { color, index, name, tag, screenX, screenY }
   else if className is 'delete'

@@ -60,6 +60,10 @@ document.querySelector '#color input'
 window.addEventListener 'focus', -> # color widget is modal, so it's closed now
   colorWidgetOpen = no
 
+# XXX is there much point to this?
+#document.querySelector 'input'
+#  .focus()
+
 # save the (new or edited) hat
 document.querySelector 'form'
   .addEventListener 'submit', (event) ->
